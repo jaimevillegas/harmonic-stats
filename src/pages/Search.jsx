@@ -36,63 +36,72 @@ const Search = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Search Artists</h1>
-        
-        <form onSubmit={handleSearch} className="mb-8">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search for an artist..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
-            >
-              {loading ? 'Searching...' : 'Search'}
-            </button>
-          </div>
-        </form>
+    <div className="max-w-4xl mx-auto">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Search Artists
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          Find detailed information about your favorite artists
+        </p>
+      </div>
 
-        {error && (
-          <div className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
-            {error}
-          </div>
-        )}
+      <form onSubmit={handleSearch} className="mb-8">
+        <div className="flex gap-4">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for an artist..."
+            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg shadow-lg transition-colors"
+          >
+            {loading ? 'Searching...' : 'Search'}
+          </button>
+        </div>
+      </form>
 
-        <div className="space-y-4">
-          {results.map((artist) => (
-            <div
-              key={artist.mbid || artist.url}
-              onClick={() => navigate(`/artist/${artist.mbid}`, { state: { artist } })}
-              className="p-4 bg-white rounded-lg shadow hover:shadow-md cursor-pointer transition-shadow"
-            >
-              <div className="flex items-center gap-4">
-                {artist.image?.[1]?.['#text'] && (
-                  <img
-                    src={artist.image[1]['#text']}
-                    alt={artist.name}
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                )}
-                <div>
-                  <h3 className="text-xl font-semibold">{artist.name}</h3>
-                  <p className="text-gray-600">
-                    {artist.listeners} listeners
-                  </p>
-                </div>
+      {error && (
+        <div className="p-4 mb-6 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-lg">
+          {error}
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {results.map((artist) => (
+          <div
+            key={artist.mbid || artist.url}
+            onClick={() => navigate(`/artist/${artist.mbid}`, { state: { artist } })}
+            className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              {artist.image?.[1]?.['#text'] && (
+                <img
+                  src={artist.image[1]['#text']}
+                  alt={artist.name}
+                  className="w-16 h-16 object-cover rounded-lg"
+                />
+              )}
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {artist.name}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {artist.listeners} listeners
+                </p>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
 
         {results.length === 0 && query && !loading && (
-          <p className="text-center text-gray-600">No results found</p>
+          <div className="text-center py-8 text-gray-600 dark:text-gray-300">
+            No results found for "{query}"
+          </div>
         )}
       </div>
     </div>
