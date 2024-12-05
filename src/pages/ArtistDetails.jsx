@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,6 +27,7 @@ ChartJS.register(
 const ArtistDetails = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const initialArtist = location.state?.artist;
 
   const [artist, setArtist] = useState(initialArtist || null);
@@ -278,7 +279,8 @@ const ArtistDetails = () => {
               {similarArtists.map((similar) => (
                 <div
                   key={similar.url}
-                  className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded"
+                  onClick={() => navigate(`/artist/${similar.name}`, { state: { artist: similar } })}
+                  className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer transition-colors duration-200"
                 >
                   {similar.image?.[2]?.['#text'] && (
                     <img
@@ -288,7 +290,7 @@ const ArtistDetails = () => {
                     />
                   )}
                   <div>
-                    <h3 className="text-gray-900 dark:text-white font-medium">{similar.name}</h3>
+                    <h3 className="text-gray-900 dark:text-white font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400">{similar.name}</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Match: {Math.round(similar.match * 100)}%
                     </p>
